@@ -20,7 +20,7 @@ You can install the development version of niche from GitHub:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("yourusername/niche")
+devtools::install_github("phdemotions/niche")
 ```
 
 ## Minimal Example
