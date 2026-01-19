@@ -1,0 +1,123 @@
+---
+title: "Getting Started with niche"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with niche}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+The `niche` package provides a minimal, stable entry point for the niche R universe, which supports reproducible, audit-ready consumer psychology research. This vignette demonstrates the basic workflow.
+
+## Package Architecture
+
+The niche universe consists of:
+
+- **niche**: User-facing entry point (this package)
+- **nicheCore**: Structural contracts and validators
+- **vision**: Specification parsing and recipe building
+- **Domain packages**: Extend functionality (not required for basic workflow)
+
+## Basic Workflow
+
+The niche workflow consists of three steps:
+
+1. **Read specification**: Define research parameters in a YAML file
+2. **Build recipe**: Construct an execution plan from the specification
+3. **Run workflow**: Execute the minimal workflow and capture results
+
+### Step 1: Create a Specification
+
+For this example, we'll use a template specification file:
+
+```{r setup}
+library(niche)
+
+# Create a temporary spec file
+tmp_spec <- tempfile(fileext = ".yml")
+vision::write_spec_template(tmp_spec)
+```
+
+### Step 2: Read and Build
+
+```{r workflow}
+# Read the specification
+spec <- niche_spec(tmp_spec)
+
+# Build the recipe
+recipe <- niche_build(spec)
+```
+
+### Step 3: Execute
+
+```{r execute}
+# Run the workflow
+result <- niche_run(recipe)
+
+# Inspect the result structure
+str(result, max.level = 1)
+```
+
+## What niche_run() Does
+
+The `niche_run()` function performs these minimal tasks:
+
+1. Validates the recipe using `nicheCore::validate_niche_recipe()`
+2. Creates output directories if they don't exist
+3. Writes the recipe to JSON for audit purposes
+4. Returns a `niche_result` object with metadata
+
+It does **not** perform:
+
+- Data processing
+- Statistical modeling
+- Scoring or scale computation
+- Report generation
+
+Those tasks are delegated to domain-specific packages.
+
+## Result Structure
+
+The `niche_result` object contains:
+
+- `recipe`: The input recipe
+- `outputs`: Named list of output directories
+- `artifacts`: List of generated files (e.g., recipe JSON)
+- `session_info`: R session information for reproducibility
+- `warnings`: List of warnings (if any)
+- `created`: ISO-8601 timestamp
+
+```{r result}
+# Check the recipe JSON was created
+cat("Recipe JSON location:", result$artifacts$recipe_json, "\n")
+cat("File exists:", file.exists(result$artifacts$recipe_json), "\n")
+
+# Check timestamp format
+cat("Created timestamp:", result$created, "\n")
+```
+
+## Cleanup
+
+```{r cleanup}
+# Remove temporary files
+unlink(tmp_spec)
+```
+
+## Next Steps
+
+To extend this minimal workflow:
+
+- Use domain packages (fury, forge, shuri, etc.) for data processing and analysis
+- Customize your specification YAML to define your research parameters
+- Integrate with your existing R workflows
+
+For more information, see the package documentation: `?niche`

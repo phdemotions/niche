@@ -1,0 +1,18 @@
+# Build artifacts
+*.o
+*.so
+*.dll
+*.tar.gz
+
+# R session data
+.RData
+.Rhistory
+.Rproj.user
+
+# Package outputs (test artifacts)
+outputs/
+
+# vignette outputs
+vignettes/*.html
+vignettes/*.pdf
+inst/doc

@@ -1,0 +1,28 @@
+Package: niche
+Title: Entry Point for the Niche R Universe for Consumer Psychology Research
+Version: 0.1.0
+Authors@R:
+    person("Josh", "Gonzales",
+           email = "jgonza10@uoguelph.ca",
+           role = c("aut", "cre", "cph"))
+Description: Provides a minimal, stable user interface for the niche R universe,
+    which supports reproducible, audit-ready consumer psychology research. This
+    package delegates specification parsing to 'vision' and structural contracts
+    to 'nicheCore', serving as the primary entry point for defining, building,
+    and executing research workflows.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    nicheCore (>= 0.1.0),
+    vision (>= 0.1.0),
+    fs,
+    utils
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    jsonlite
+Config/testthat/edition: 3
+VignetteBuilder: knitr
